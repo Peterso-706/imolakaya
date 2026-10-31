@@ -8,65 +8,15 @@ import { useBiens } from "@/hooks/useBiens";
 import { PropertyCard } from "@/components/public/PropertyCard";
 import { MediaModal } from "@/components/public/MediaModal";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
-import { BienReadDetail } from "@/types/bien";
 
-const MOCK_BIENS: BienReadDetail[] = [
-  {
-    id: "mock-1",
-    titre: "Belle maison 3 chambres à Pétion-Ville",
-    description: "Magnifique maison avec jardin",
-    type_operation: "VENTE" as any,
-    type_location: null,
-    prix: 250000,
-    devise: "USD" as any,
-    frequence_paiement: null,
-    nombre_chambres: 3,
-    nombre_salles_bain: 2,
-    superficie_m2: 250,
-    annee_construction: 2018,
-    caracteristiques: null,
-    statut: "DISPONIBLE" as any,
-    est_actif: true,
-    categorie_id: "cat-1",
-    localisation_id: "loc-1",
-    proprietaire_id: "prop-1",
-    cree_le: new Date().toISOString(),
-    categorie: { id: "cat-1", nom: "Maison", slug: "maison", ordre: 1, est_active: true } as any,
-    localisation: { id: "loc-1", departement: "Ouest", commune: "Pétion-Ville", zone: "Pétion-Ville", adresse_descriptive: null } as any,
-    medias: [{ id: "m1", bien_id: "mock-1", url: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600", type: "PHOTO" as any, ordre: 0, est_couverture: true, cree_le: "" } as any],
-  },
-  {
-    id: "mock-2",
-    titre: "Appartement moderne à Delmas",
-    description: "Appartement 2 chambres",
-    type_operation: "LOCATION" as any,
-    type_location: "APPARTEMENT" as any,
-    prix: 1200,
-    devise: "USD" as any,
-    frequence_paiement: "MENSUEL" as any,
-    nombre_chambres: 2,
-    nombre_salles_bain: 1,
-    superficie_m2: 85,
-    annee_construction: 2021,
-    caracteristiques: null,
-    statut: "DISPONIBLE" as any,
-    est_actif: true,
-    categorie_id: "cat-2",
-    localisation_id: "loc-2",
-    proprietaire_id: "prop-1",
-    cree_le: new Date().toISOString(),
-    categorie: { id: "cat-2", nom: "Appartement", slug: "appartement", ordre: 2, est_active: true } as any,
-    localisation: { id: "loc-2", departement: "Ouest", commune: "Port-au-Prince", zone: "Delmas", adresse_descriptive: null } as any,
-    medias: [{ id: "m2", bien_id: "mock-2", url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600", type: "PHOTO" as any, ordre: 0, est_couverture: true, cree_le: "" } as any],
-  },
-];
+// (mock data removed — les données viennent de l'API)
 
 export default function AccueilPage() {
   const { data, isLoading, error } = useBiens({ taille: 12, page: 1 });
   const [modalSrc, setModalSrc] = useState<string | null>(null);
   const [modalType, setModalType] = useState<"image" | "video">("image");
 
-  const biens = data?.items && data.items.length > 0 ? data.items : MOCK_BIENS;
+  const biens = data?.items ?? [];
 
   const openMedia = (src: string, type: "image" | "video") => {
     setModalSrc(src);
@@ -124,13 +74,17 @@ export default function AccueilPage() {
             {error && <p className="text-red-600 text-sm">{error}</p>}
 
             {!isLoading && (
-              <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
-                {biens.map((bien, i) => (
-                  <div key={bien.id} className="break-inside-avoid mb-4">
-                    <PropertyCard bien={bien} onOpenMedia={openMedia} index={i} />
-                  </div>
-                ))}
-              </div>
+              biens.length > 0 ? (
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
+                  {biens.map((bien, i) => (
+                    <div key={bien.id} className="break-inside-avoid mb-4">
+                      <PropertyCard bien={bien} onOpenMedia={openMedia} index={i} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500 text-sm">Aucun bien disponible pour le moment.</p>
+              )
             )}
           </div>
 
