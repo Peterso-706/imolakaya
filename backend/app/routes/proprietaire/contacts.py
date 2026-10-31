@@ -22,3 +22,7 @@ def lister(
         "items": items, "total": total, "page": page, "taille": taille,
         "pages": (total + taille - 1) // taille if total else 0,
     }
+
+@router.get("/contacts/{contact_id}", response_model=ContactRead)
+def detail_contact(contact_id: UUID, user: CurrentUser, db: DbSession):
+    return interaction_service.obtenir_contact(db, user, contact_id)

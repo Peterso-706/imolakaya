@@ -4,6 +4,9 @@ import { ContactRead, ContactCreatePublic } from "@/types/interaction";
 import { PaginatedResponse, IdResponse } from "@/types/api";
 
 export const contactsService = {
+  getContact: async (contactId: string): Promise<ContactRead> => {
+    return fetchApi<ContactRead>(`/proprietaire/contacts/${contactId}`);
+  },
   // --- PUBLIC ---
   // POST /api/v1/public/contacts
   creerPublic: async (payload: ContactCreatePublic): Promise<IdResponse> => {

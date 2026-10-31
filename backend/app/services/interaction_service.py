@@ -207,6 +207,13 @@ def marquer_notification_lue(
     db.refresh(notif)
     return notif
 
+def obtenir_contact(db: Session, user: Utilisateur, contact_id: UUID) -> Contact:
+    contact = db.get(Contact, contact_id)
+    if contact is None or contact.proprietaire_id != (user.proprietaire.id if user.proprietaire else None):
+        raise NotFoundError("Contact introuvable")
+    return contact
+
+
 def lister_contacts_proprietaire(db: Session, user: Utilisateur, *, page: int = 1, taille: int = 20):
     if user.proprietaire is None:
         return [], 0
