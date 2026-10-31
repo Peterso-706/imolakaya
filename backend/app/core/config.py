@@ -70,6 +70,15 @@ class Settings(BaseSettings):
             return [x.strip() for x in v.split(",") if x.strip()]
         return v
 
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def _normalize_db_url(cls, v):
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                v = v.replace("postgres://", "postgresql+psycopg://", 1)
+            elif v.startswith("postgresql://") and "+psycopg" not in v:
+                v = v.replace("postgresql://", "postgresql+psycopg://", 1)
+        return v
     @model_validator(mode="after")
     def _validate_environment(self):
         allowed = {"development", "staging", "production"}
