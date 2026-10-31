@@ -40,12 +40,12 @@ def main() -> None:
             )
             db.add(user)
             db.flush()
-            print(f"✔ Utilisateur créé : {email}")
+            print(f"OK Utilisateur cree : {email}")
         else:
             user.mot_de_passe_hash = hash_password(password)
             user.est_actif = True
             user.est_verifie = True
-            print(f"✔ Utilisateur mis à jour : {email}")
+            print(f"OK Utilisateur mis a jour : {email}")
 
         role = db.scalar(select(Role).where(Role.nom == role_nom))
         if role is None:
@@ -53,10 +53,10 @@ def main() -> None:
         else:
             if role not in user.roles:
                 user.roles.append(role)
-            print(f"✔ Rôle '{role_nom}' assigné")
+            print(f"OK Role '{role_nom}' assigne")
 
         db.commit()
-        print("✅ Admin prêt")
+        print("OK Admin pret")
         print(f"   Email    : {email}")
         print(f"   Mot de passe : {password}")
     finally:

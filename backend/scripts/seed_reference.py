@@ -95,7 +95,7 @@ def seed_roles_et_permissions(db) -> None:
         db.flush()
 
     db.commit()
-    print("✔ Rôles et permissions seedés")
+    print("OK Roles et permissions seedes")
 
 
 def seed_categories(db) -> None:
@@ -110,7 +110,7 @@ def seed_categories(db) -> None:
         ).on_conflict_do_nothing(index_elements=["slug"])
         db.execute(stmt)
     db.commit()
-    print(f"✔ {len(CATEGORIES)} catégories seedées")
+    print(f"OK {len(CATEGORIES)} categories seedees")
 
 
 def seed_localisations(db) -> None:
@@ -124,7 +124,7 @@ def seed_localisations(db) -> None:
         )
         db.execute(stmt)
     db.commit()
-    print(f"✔ {len(LOCALISATIONS)} localisations seedées")
+    print(f"OK {len(LOCALISATIONS)} localisations seedees")
 
 
 def main() -> None:
@@ -133,7 +133,7 @@ def main() -> None:
         seed_roles_et_permissions(db)
         seed_categories(db)
         seed_localisations(db)
-        print("\n✅ Seed de référence terminé")
+        print("\nOK Seed de reference termine")
     finally:
         db.close()
 
