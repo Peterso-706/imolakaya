@@ -170,7 +170,7 @@ export default function AccueilPage() {
                 <Phone size={16} /> Contactez-nous
               </h3>
               <p className="text-sm text-gray-300 mb-4">
-                Besoin d'aide pour trouver votre bien ? Notre équipe est disponible.
+                Besoin d&apos;aide pour trouver votre bien ? Notre équipe est disponible.
               </p>
               <a
                 href="tel:+50936000000"
