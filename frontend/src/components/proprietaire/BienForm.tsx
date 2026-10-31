@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { bienCreateSchema, BienCreateFormData } from "@/forms/bien.schema";
@@ -33,7 +34,7 @@ export const BienForm = ({
     formState: { errors },
     watch,
     reset,
-  } = useForm<BienCreateFormData>({
+  } = useForm<z.input<typeof bienCreateSchema>, any, BienCreateFormData>({
     resolver: zodResolver(bienCreateSchema),
     defaultValues: bienInitial
       ? {
@@ -52,7 +53,7 @@ export const BienForm = ({
           categorie_id: bienInitial.categorie_id,
           localisation_id: bienInitial.localisation_id,
           statut: bienInitial.statut,
-          reference_interne: null,
+          reference_interne: undefined,
         }
       : {
           type_operation: TypeOperation.VENTE,

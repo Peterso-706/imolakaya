@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { paiementEnLigneSchema, PaiementEnLigneFormData } from "@/forms/paiement.schema";
@@ -28,7 +29,7 @@ export const PaiementInitier = ({ onSuccess }: PaiementInitierProps) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<PaiementEnLigneFormData>({
+  } = useForm<z.input<typeof paiementEnLigneSchema>, any, PaiementEnLigneFormData>({
     resolver: zodResolver(paiementEnLigneSchema),
     defaultValues: {
       devise: Devise.HTG,
