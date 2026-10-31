@@ -4,13 +4,14 @@ from uuid import UUID
 from fastapi import APIRouter, Query
 
 from app.core.deps import CurrentUser, DbSession
+from app.schemas.common import PaginatedResponse
 from app.schemas.interaction import ContactRead, ContactUpdateProprietaire
 from app.services import interaction_service
 
 router = APIRouter()
 
 
-@router.get("/contacts")
+@router.get("/contacts", response_model=PaginatedResponse[ContactRead])
 def lister(
     db: DbSession, user: CurrentUser,
     page: Annotated[int, Query(ge=1)] = 1,

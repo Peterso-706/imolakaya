@@ -6,12 +6,13 @@ from fastapi import APIRouter, Depends, Query
 from app.core.deps import CurrentUser, DbSession, require_permissions
 from app.core.permissions import Permissions
 from app.schemas.annonce import AnnonceCreate, AnnonceRead, AnnonceUpdate
+from app.schemas.common import PaginatedResponse
 from app.services import annonce_service
 
 router = APIRouter()
 
 
-@router.get("/annonces")
+@router.get("/annonces", response_model=PaginatedResponse[AnnonceRead])
 def lister(
     db: DbSession, user: CurrentUser,
     page: Annotated[int, Query(ge=1)] = 1,

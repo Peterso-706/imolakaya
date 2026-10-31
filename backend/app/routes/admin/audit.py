@@ -6,12 +6,15 @@ from sqlalchemy import func, select
 from app.core.deps import CurrentUser, DbSession, require_permissions
 from app.core.permissions import Permissions
 from app.models.audit import AuditLog
+from app.schemas.audit import AuditLogRead
+from app.schemas.common import PaginatedResponse
 
 router = APIRouter()
 
 
 @router.get(
     "/audit",
+    response_model=PaginatedResponse[AuditLogRead],
     dependencies=[Depends(require_permissions(Permissions.AUDIT_LIRE))],
 )
 def lister_audit(
