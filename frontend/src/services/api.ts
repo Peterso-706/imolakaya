@@ -39,6 +39,7 @@ export async function fetchApi<T>(
   if (response.status === 401) {
     if (typeof window !== "undefined") {
       localStorage.removeItem("@imolakaya:token");
+      document.cookie = "@imolakaya:token=; path=/; max-age=0; SameSite=Lax";
     }
   }
 
