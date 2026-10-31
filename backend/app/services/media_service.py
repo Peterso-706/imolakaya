@@ -46,6 +46,9 @@ def ajouter_media(
             if m.est_couverture:
                 m.est_couverture = False
 
+    next_ordre = max((m.ordre for m in bien.medias), default=-1) + 1
+    payload.ordre = next_ordre
+
     media = Media(bien_id=bien.id, **payload.model_dump())
     db.add(media)
     db.flush()
