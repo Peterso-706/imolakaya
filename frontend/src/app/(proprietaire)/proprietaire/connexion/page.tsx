@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LogIn } from "lucide-react";
+import { decodeJwt } from "jose";
 import { loginSchema, LoginFormData } from "@/forms/auth.schema";
 import { authService } from "@/services/auth.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "@/components/shared/Input";
 import { Button } from "@/components/shared/Button";
 import { getErrorMessage } from "@/utils/errors";
+import { Roles } from "@/utils/constants";
 
 export default function ConnexionPage() {
   const router = useRouter();
@@ -32,6 +34,14 @@ export default function ConnexionPage() {
     setError(null);
     try {
       const response = await authService.login(data);
+      const decoded = decodeJwt<{ roles: string[] }>(response.access_token);
+      const roles = decoded.roles || [];
+
+      if (!roles.includes(Roles.PROPRIETAIRE)) {
+        setError("Accès refusé : ce compte n'a pas les droits propriétaire.");
+        return;
+      }
+
       login(response.access_token);
       router.push("/proprietaire/dashboard");
     } catch (err) {
