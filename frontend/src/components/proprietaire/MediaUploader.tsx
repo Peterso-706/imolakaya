@@ -20,6 +20,12 @@ export const MediaUploader = ({ bienId, medias, onRefresh }: MediaUploaderProps)
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const MAX_IMAGES = 3;
+  const MAX_VIDEOS = 2;
+
+  const imagesCount = medias.filter((m) => m.type === TypeMedia.PHOTO).length;
+  const videosCount = medias.filter((m) => m.type === TypeMedia.VIDEO).length;
+
   const handleFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
@@ -32,6 +38,22 @@ export const MediaUploader = ({ bienId, medias, onRefresh }: MediaUploaderProps)
       return;
     }
 
+    const selectedImages = acceptes.filter((f) => f.type.startsWith("image/")).length;
+    const selectedVideos = acceptes.filter((f) => f.type.startsWith("video/")).length;
+
+    if (imagesCount + selectedImages > MAX_IMAGES) {
+      setError(
+        `Maximum ${MAX_IMAGES} images autorisées (${imagesCount} déjà présentes, ${selectedImages} sélectionnées).`
+      );
+      return;
+    }
+    if (videosCount + selectedVideos > MAX_VIDEOS) {
+      setError(
+        `Maximum ${MAX_VIDEOS} vidéos autorisées (${videosCount} déjà présentes, ${selectedVideos} sélectionnées).`
+      );
+      return;
+    }
+
     setIsUploading(true);
     setError(null);
     setProgress({ done: 0, total: acceptes.length });
@@ -40,7 +62,6 @@ export const MediaUploader = ({ bienId, medias, onRefresh }: MediaUploaderProps)
 
     for (let i = 0; i < acceptes.length; i++) {
       try {
-        // Le premier upload devient la couverture si aucune n'existe déjà
         const isCover = !hasCover && i === 0;
         await mediasService.uploader(bienId, acceptes[i], isCover);
         setProgress((prev) => ({ ...prev, done: prev.done + 1 }));
@@ -110,7 +131,7 @@ export const MediaUploader = ({ bienId, medias, onRefresh }: MediaUploaderProps)
           Glissez vos fichiers ici, ou cliquez pour sélectionner
         </p>
         <p className="text-xs text-gray-500 mb-4">
-          Images (JPG, PNG, WEBP) et vidéos (MP4) acceptées
+          Images (JPG, PNG, WEBP) et vidéos (MP4) acceptées — max {MAX_IMAGES} images et {MAX_VIDEOS} vidéos
         </p>
         <Button
           variant="primary"
@@ -122,9 +143,26 @@ export const MediaUploader = ({ bienId, medias, onRefresh }: MediaUploaderProps)
         </Button>
 
         {isUploading && (
-          <p className="text-xs text-imo-green mt-3">
-            Téléversement en cours... {progress.done}/{progress.total}
-          </p>
+          <div className="mt-3 space-y-1">
+            <div className="flex justify-between text-xs text-imo-green">
+              <span>Téléversement en cours...</span>
+              <span>
+                {progress.done}/{progress.total}
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="bg-imo-green h-2 rounded-full transition-all duration-300"
+                style={{
+                  width: `${
+                    progress.total > 0
+                      ? Math.round((progress.done / progress.total) * 100)
+                      : 0
+                  }%`,
+                }}
+              />
+            </div>
+          </div>
         )}
       </div>
 
