@@ -4,6 +4,7 @@
 import { usePathname } from "next/navigation";
 import Sidebar from "@/components/proprietaire/Sidebar";
 import { ProtectedRoute } from "@/components/shared/ProtectedRoute";
+import { Roles } from "@/utils/constants";
 
 /**
  * Layout de l'espace propriétaire.
@@ -35,7 +36,7 @@ export default function ProprietaireLayout({
 
   // Pages protégées : Sidebar + zone de contenu
   return (
-    <ProtectedRoute>
+    <ProtectedRoute requiredRoles={[Roles.PROPRIETAIRE]}>
       <div className="min-h-screen bg-imo-light flex">
         <Sidebar />
         <main className="flex-1 min-w-0 pt-16 lg:pt-0">
