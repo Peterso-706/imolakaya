@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Upload, Trash2, ArrowUp, ArrowDown, Image as ImageIcon, Video, Star } from "lucide-react";
 import { MediaRead } from "@/types/media";
+import { TypeMedia } from "@/types/enums";
 import { mediasService } from "@/services/medias.service";
 import { Button } from "@/components/shared/Button";
 
@@ -143,7 +144,7 @@ export const MediaUploader = ({ bienId, medias, onRefresh }: MediaUploaderProps)
             {medias.map((media, index) => (
               <div key={media.id} className="relative group rounded-lg overflow-hidden border border-imo-gray bg-white">
                 <div className="aspect-square bg-imo-gray-light">
-                  {media.type === "VIDEO" ? (
+                  {media.type === TypeMedia.VIDEO ? (
                     <div className="w-full h-full flex items-center justify-center bg-imo-dark text-white">
                       <Video size={32} />
                     </div>

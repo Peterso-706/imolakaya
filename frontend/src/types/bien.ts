@@ -6,6 +6,8 @@ import {
   TypeLocation, 
   TypeOperation 
 } from "./enums";
+import { MediaRead } from "./media";
+
 
 // --- Kategori ---
 export interface CategorieBase {
@@ -33,7 +35,6 @@ export interface LocalisationRead extends LocalisationBase {
   id: string;
 }
 
-// --- Byen ---
 export interface BienBase {
   titre: string;
   description: string;
@@ -83,14 +84,6 @@ export interface BienRead extends BienBase {
   localisation_id: string;
   proprietaire_id: string;
   cree_le: string; // Datetime
-}
-
-export interface MediaRead {
-  id: string;
-  url: string;
-  type: "PHOTO" | "VIDEO";
-  est_couverture: boolean;
-  ordre: number;
 }
 
 export interface BienReadDetail extends BienRead {
