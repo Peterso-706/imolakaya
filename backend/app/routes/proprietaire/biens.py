@@ -7,13 +7,13 @@ from app.core.deps import CurrentUser, DbSession
 from app.core.permissions import Permissions
 from app.core.deps import require_permissions
 from app.schemas.bien import BienCreate, BienRead, BienUpdate
-from app.schemas.common import MessageResponse
+from app.schemas.common import MessageResponse, PaginatedResponse
 from app.services import bien_service
 
 router = APIRouter()
 
 
-@router.get("/biens")
+@router.get("/biens", response_model=PaginatedResponse[BienRead])
 def lister(
     db: DbSession,
     user: CurrentUser,
