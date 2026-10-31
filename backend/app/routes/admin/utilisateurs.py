@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, Query
 
 from app.core.deps import CurrentUser, DbSession, require_permissions
 from app.core.permissions import Permissions
+from app.schemas.common import PaginatedResponse
 from app.schemas.utilisateur import UtilisateurAdminUpdate, UtilisateurCreate, UtilisateurRead, UtilisateurReadDetail
 from app.services import utilisateur_service
 from app.core.exceptions import NotFoundError
@@ -13,7 +14,7 @@ from app.models.utilisateur import Utilisateur
 router = APIRouter()
 
 
-@router.get("/utilisateurs")
+@router.get("/utilisateurs", response_model=PaginatedResponse[UtilisateurRead])
 def lister(
     db: DbSession,
     user: Annotated[Any, Depends(require_permissions(Permissions.UTILISATEUR_LIRE))],
@@ -64,7 +65,7 @@ def detail_utilisateur(
     return u
 
 
-@router.get("/proprietaires")
+@router.get("/proprietaires", response_model=PaginatedResponse[UtilisateurRead])
 def lister_proprietaires(
     db: DbSession,
     user: Annotated[Any, Depends(require_permissions(Permissions.UTILISATEUR_LIRE))],

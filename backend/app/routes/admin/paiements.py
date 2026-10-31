@@ -5,8 +5,10 @@ from fastapi import APIRouter, Depends, Query
 
 from app.core.deps import CurrentUser, DbSession, require_permissions
 from app.core.permissions import Permissions
+from app.schemas.common import PaginatedResponse
 from app.schemas.paiement import (
     PaiementConfirmerManuelRequest,
+    PaiementRead,
     PaiementReadDetail,
 )
 from app.services import paiement_service
@@ -14,7 +16,7 @@ from app.services import paiement_service
 router = APIRouter()
 
 
-@router.get("/paiements")
+@router.get("/paiements", response_model=PaginatedResponse[PaiementRead])
 def lister(
     db: DbSession, user: CurrentUser,
     page: Annotated[int, Query(ge=1)] = 1,

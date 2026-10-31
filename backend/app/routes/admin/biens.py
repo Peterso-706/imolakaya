@@ -4,12 +4,14 @@ from fastapi import APIRouter, Query
 
 from app.core.deps import CurrentUser, DbSession, require_permissions
 from app.core.permissions import Permissions
+from app.schemas.bien import BienRead
+from app.schemas.common import PaginatedResponse
 from app.services import bien_service
 
 router = APIRouter()
 
 
-@router.get("/biens")
+@router.get("/biens", response_model=PaginatedResponse[BienRead])
 def lister(
     db: DbSession,
     user: Annotated[Any, None] = None,
