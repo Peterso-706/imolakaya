@@ -2,22 +2,24 @@ from enum import Enum
 
 
 class TypeOperation(str, Enum):
-    VENTE = "vente"
-    LOCATION = "location"
+    VENTE = "VENTE"
+    LOCATION = "LOCATION"
 
 
 class TypeLocation(str, Enum):
-    LOGEMENT_ENTIER = "logement_entier"
-    APPARTEMENT = "appartement"
-    CHAMBRE = "chambre"
+    MAISON = "MAISON"
+    APPARTEMENT = "APPARTEMENT"
+    CHAMBRE = "CHAMBRE"
+    TERRAIN = "TERRAIN"
+    LOCAL_COMMERCIAL = "LOCAL_COMMERCIAL"
 
 
 class StatutBien(str, Enum):
-    DISPONIBLE = "disponible"
-    RESERVE = "reserve"
-    LOUE = "loue"
-    VENDU = "vendu"
-    RETIRE = "retire"
+    DISPONIBLE = "DISPONIBLE"
+    RESERVE = "RESERVE"
+    LOUE = "LOUE"
+    VENDU = "VENDU"
+    RETIRE = "RETIRE"
 
 
 class StatutAnnonce(str, Enum):
@@ -40,10 +42,10 @@ class Devise(str, Enum):
 
 
 class FrequencePaiement(str, Enum):
-    MENSUEL = "mensuel"
-    TRIMESTRIEL = "trimestriel"
-    SEMESTRIEL = "semestriel"
-    ANNUEL = "annuel"
+    MENSUEL = "MENSUEL"
+    TRIMESTRIEL = "TRIMESTRIEL"
+    SEMESTRIEL = "SEMESTRIEL"
+    ANNUEL = "ANNUEL"
 
 class SourcePaiement(str, Enum):
     EN_LIGNE = "en_ligne"

@@ -172,7 +172,7 @@ def main() -> None:
                 "titre": "Maison familiale à Delmas 33",
                 "description": "Maison 3 chambres avec cour.",
                 "type_operation": TypeOperation.LOCATION,
-                "type_location": TypeLocation.LOGEMENT_ENTIER,
+                "type_location": TypeLocation.MAISON,
                 "prix": Decimal("55000.00"),
                 "devise": Devise.HTG,
                 "frequence_paiement": FrequencePaiement.MENSUEL,

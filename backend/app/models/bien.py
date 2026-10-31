@@ -78,8 +78,8 @@ class Bien(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "biens"
     __table_args__ = (
         CheckConstraint(
-            "(type_operation = 'location' AND type_location IS NOT NULL) "
-            "OR (type_operation = 'vente')",
+            "(type_operation = 'LOCATION' AND type_location IS NOT NULL) "
+            "OR (type_operation = 'VENTE')",
             name="ck_bien_location_requires_type_location",
         ),
         CheckConstraint("prix >= 0", name="ck_bien_prix_positif"),
