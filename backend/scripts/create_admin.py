@@ -42,10 +42,9 @@ def main() -> None:
             db.flush()
             print(f"OK Utilisateur cree : {email}")
         else:
-            user.mot_de_passe_hash = hash_password(password)
             user.est_actif = True
             user.est_verifie = True
-            print(f"OK Utilisateur mis a jour : {email}")
+            print(f"OK Utilisateur existant conserve : {email}")
 
         role = db.scalar(select(Role).where(Role.nom == role_nom))
         if role is None:
@@ -65,4 +64,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-PY
