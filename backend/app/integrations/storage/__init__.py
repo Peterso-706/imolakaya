@@ -15,6 +15,9 @@ def _get_provider() -> StorageProvider | None:
     elif settings.storage_provider == "r2":
         from app.integrations.storage.r2_provider import R2Provider
         _provider = R2Provider()
+    elif settings.storage_provider == "local":
+        from app.integrations.storage.local_provider import LocalProvider
+        _provider = LocalProvider()
     return _provider
 
 

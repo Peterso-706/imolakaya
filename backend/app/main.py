@@ -1,4 +1,7 @@
+from pathlib import Path
+
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,6 +18,11 @@ app = FastAPI(
     version=settings.app_version,
     debug=settings.debug,
 )
+
+# Servir les fichiers uploadés localement (fallback gratuit)
+_uploads_dir = Path(settings.local_storage_path)
+_uploads_dir.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(_uploads_dir)), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,

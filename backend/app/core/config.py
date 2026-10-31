@@ -33,9 +33,13 @@ class Settings(BaseSettings):
     cors_origins: Annotated[list[str], NoDecode] = Field(default_factory=list)
 
     # --- Stockage ---
-    storage_provider: Literal["cloudinary", "r2"] | None = None
+    storage_provider: Literal["cloudinary", "r2", "local"] | None = None
     cloudinary_url: str | None = None
     cloudinary_folder: str = "imolakaya"
+
+    # --- Stockage local (fallback gratuit) ---
+    local_storage_path: str = "uploads"
+    media_base_url: str = "http://localhost:8000"
 
     # --- R2 ---
     r2_account_id: str | None = None
