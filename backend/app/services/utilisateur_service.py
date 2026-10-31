@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import ConflictError, NotFoundError
+from app.core.exceptions import ConflictError, ForbiddenError, NotFoundError
 from app.core.security import hash_password
 from app.models.role import Role
 from app.models.utilisateur import Utilisateur
@@ -43,6 +43,8 @@ def modifier_utilisateur(
     user = db.get(Utilisateur, user_id)
     if user is None:
         raise NotFoundError("Utilisateur introuvable")
+    if user.email == "admin@imolakaya.com":
+        raise ForbiddenError("Le compte super admin est protégé et ne peut pas être modifié")
     for champ, valeur in payload.model_dump(exclude_unset=True).items():
         setattr(user, champ, valeur)
     log_action(db, user_id=admin.id, action="utilisateur.modification",
