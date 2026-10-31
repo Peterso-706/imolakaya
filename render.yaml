@@ -24,7 +24,7 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "60"
       - key: STORAGE_PROVIDER
-        value: local
+        value: db
       - key: MEDIA_BASE_URL
         value: https://imolakaya.onrender.com
       - key: RATE_LIMIT_PER_MINUTE

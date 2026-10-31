@@ -1,12 +1,15 @@
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.router import api_router
 from app.core.config import get_settings
+from app.database.session import SessionLocal
+from app.models.media import MediaFile
 
 settings = get_settings()
 
@@ -28,11 +31,19 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(api_router, prefix=settings.api_v1_prefix)
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Erreur interne du serveur"},
+    )
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
@@ -55,6 +66,18 @@ from fastapi import Response
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
     return Response(status_code=204)
+
+@app.get("/media-files/{path:path}", include_in_schema=False)
+def servir_fichier_db(path: str):
+    db = SessionLocal()
+    try:
+        mf = db.query(MediaFile).filter(MediaFile.cle == path).first()
+        if mf is None:
+            return Response(status_code=404)
+        return Response(content=mf.contenu, media_type=mf.content_type)
+    finally:
+        db.close()
+
 
 @app.get("/health", tags=["system"])
 def health() -> dict[str, str]:

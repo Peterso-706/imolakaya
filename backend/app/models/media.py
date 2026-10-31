@@ -9,6 +9,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    LargeBinary,
     String,
     UniqueConstraint,
 )
@@ -62,4 +63,15 @@ class Media(Base, UUIDMixin, TimestampMixin):
     hauteur: Mapped[int | None] = mapped_column(Integer, nullable=True)
     duree_secondes: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
+
     bien: Mapped["Bien"] = relationship(back_populates="medias")
+
+
+class MediaFile(Base, UUIDMixin, TimestampMixin):
+    """Stockage binaire en base (fallback persistant sans service externe)."""
+    __tablename__ = "media_files"
+
+    cle: Mapped[str] = mapped_column(String(500), unique=True, nullable=False, index=True)
+    content_type: Mapped[str] = mapped_column(String(120), nullable=False)
+    contenu: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
+    taille_octets: Mapped[int] = mapped_column(Integer, nullable=False)

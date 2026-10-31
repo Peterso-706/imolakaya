@@ -18,6 +18,9 @@ def _get_provider() -> StorageProvider | None:
     elif settings.storage_provider == "local":
         from app.integrations.storage.local_provider import LocalProvider
         _provider = LocalProvider()
+    elif settings.storage_provider == "db":
+        from app.integrations.storage.db_provider import DbProvider
+        _provider = DbProvider()
     return _provider
 
 

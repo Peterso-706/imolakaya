@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     cors_origins: Annotated[list[str], NoDecode] = Field(default_factory=list)
 
     # --- Stockage ---
-    storage_provider: Literal["cloudinary", "r2", "local"] | None = None
+    storage_provider: Literal["cloudinary", "r2", "local", "db"] | None = None
     cloudinary_url: str | None = None
     cloudinary_folder: str = "imolakaya"
 
