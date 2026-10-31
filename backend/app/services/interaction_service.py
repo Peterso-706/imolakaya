@@ -50,7 +50,7 @@ def creer_contact(
         type_=TypeNotification.CONTACT_RECU,
         titre="Nouvelle demande de contact",
         message=f"Bien : {bien.titre}",
-        lien=f"/proprietaire/contacts/{contact.id}",
+        lien=f"/proprietaire/contacts",
     )
     db.commit()
     db.refresh(contact)
