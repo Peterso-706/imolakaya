@@ -71,9 +71,16 @@ def reordonner_medias(
     for item in payload.items:
         if item.id not in ids_autorises:
             raise ForbiddenError(f"Média {item.id} hors périmètre")
+
+    # Éviter les violations de contrainte unique pendant le réordonnancement
+    # en passant d'abord par des valeurs temporaires.
+    medias_map = {m.id: m for m in bien.medias}
     for item in payload.items:
-        media = db.get(Media, item.id)
-        media.ordre = item.ordre
+        medias_map[item.id].ordre = 10000 + item.ordre
+    db.flush()
+
+    for item in payload.items:
+        medias_map[item.id].ordre = item.ordre
     db.commit()
 
 
