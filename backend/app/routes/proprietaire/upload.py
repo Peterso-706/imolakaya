@@ -33,12 +33,15 @@ async def upload_media(
     taille_estimee = len(contenu)
     media_service.valider_fichier(fichier.content_type, taille_estimee)
 
-    result = upload_fichier(
-        contenu,
-        filename=fichier.filename or "fichier",
-        content_type=fichier.content_type,
-        dossier=f"biens/{bien_id}",
-    )
+    try:
+        result = upload_fichier(
+            contenu,
+            filename=fichier.filename or "fichier",
+            content_type=fichier.content_type,
+            dossier=f"biens/{bien_id}",
+        )
+    except RuntimeError as exc:
+        raise BadRequestError(str(exc)) from exc
 
     type_media = (
         TypeMedia.VIDEO if fichier.content_type.startswith("video/")
