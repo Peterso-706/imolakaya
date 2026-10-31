@@ -56,7 +56,7 @@ export default function NotificationsPage() {
                     </p>
                     {notif.lien && (
                       <Link
-                        href={notif.lien}
+                        href={notif.lien.replace(/\/proprietaire\/contacts\/.*/, "/proprietaire/contacts")}
                         className="text-xs text-imo-green font-semibold hover:underline mt-1 inline-block"
                       >
                         Voir le détail →
